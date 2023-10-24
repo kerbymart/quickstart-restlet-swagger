@@ -13,7 +13,11 @@
         <java.version>1.8</java.version>
         <junit.version>4.13.1</junit.version>
         <shrinkwrap.api.version>1.2.3</shrinkwrap.api.version>
+        <shrinkwrap.resolver.version>2.2.0</shrinkwrap.resolver.version>
         <arquillian.version>1.1.11.Final</arquillian.version>
+        <arquillian.jetty.embedded.version>1.0.0.CR3</arquillian.jetty.embedded.version>
+        <jetty.version>9.4.49.v20220914</jetty.version>
+        <maven.dependency.plugin.version>3.3.0</maven.dependency.plugin.version>
         <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
         <maven.war.plugin.version>3.3.1</maven.war.plugin.version>
         <maven.jetty.plugin.version>6.1.25</maven.jetty.plugin.version>
@@ -30,6 +34,11 @@
 
     <dependencyManagement>
         <dependencies>
+            <!--
+                Arquillian BOM:
+                Centralizes version management for all Arquillian-related dependencies, ensuring
+                consistent and compatible versions across the project.
+            -->
             <dependency>
                 <groupId>org.jboss.arquillian</groupId>
                 <artifactId>arquillian-bom</artifactId>
@@ -41,18 +50,33 @@
     </dependencyManagement>
 
     <dependencies>
-        <!-- Restlet framework core -->
+        <!--
+            Restlet Framework's Core Dependency:
+            Essential for creating RESTful web services using Restlet.
+        -->
         <dependency>
             <groupId>org.restlet.jee</groupId>
             <artifactId>org.restlet</artifactId>
             <version>${restlet.version}</version>
         </dependency>
-        <!-- Restlet extension for Servlet HTTP connectors -->
+
+        <!--
+            Restlet's Servlet Extension:
+            Bridges the Restlet framework with Java Servlets, facilitating
+            the use of HTTP connectors in a Servlet environment.
+        -->
         <dependency>
             <groupId>org.restlet.jee</groupId>
             <artifactId>org.restlet.ext.servlet</artifactId>
             <version>${restlet.version}</version>
         </dependency>
+
+        <!--
+            Restlet's Swagger Extension:
+            Seamlessly integrates Restlet with Swagger, allowing for
+            enhanced API documentation generation and interactive testing.
+            Note: RAML parser has been excluded to prevent potential conflicts.
+        -->
         <dependency>
             <groupId>org.restlet.jee</groupId>
             <artifactId>org.restlet.ext.swagger</artifactId>
@@ -64,148 +88,194 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!-- Restlet extension for standalone HTTP connectors -->
+
+        <!--
+            Restlet's Standalone HTTP Connectors:
+            Enables Restlet applications to run as standalone applications
+            by leveraging simple framework-based HTTP connectors.
+        -->
         <dependency>
             <groupId>org.restlet.jse</groupId>
             <artifactId>org.restlet.ext.simple</artifactId>
             <version>${restlet.version}</version>
         </dependency>
-        <!-- Restlet extension for Jetty HTTP connectors -->
-<!--        <dependency>-->
-<!--            <groupId>org.restlet.jse</groupId>-->
-<!--            <artifactId>org.restlet.ext.jetty</artifactId>-->
-<!--            <version>${restlet.version}</version>-->
-<!--        </dependency>-->
 
-        <!-- JUnit test framework -->
+        <!-- Enables the writing and execution of unit tests using JUnit. -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-        <!-- Arquillian dependencies -->
+
+        <!--
+            Arquillian with JUnit:
+            Enhances the JUnit testing capability by enabling tests to
+            be run inside actual runtime environments.
+        -->
         <dependency>
             <groupId>org.jboss.arquillian.junit</groupId>
             <artifactId>arquillian-junit-container</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!--
+            Arquillian Jetty Embedded:
+            Configures Arquillian to utilize Jetty as the embedded server for tests.
+        -->
         <dependency>
             <groupId>org.jboss.arquillian.container</groupId>
             <artifactId>arquillian-jetty-embedded-9</artifactId>
-            <version>1.0.0.CR3</version>
+            <version>${arquillian.jetty.embedded.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <!--
+            ShrinkWrap:
+            A toolset for assembling archives (like WAR and JAR). Used extensively
+            with Arquillian to create test deployments.
+            - API: The core API for ShrinkWrap.
+            - Resolver (Maven): Resolves Maven dependencies for the created archives.
+            - Resolver Implementation: Implementation for the Maven resolver.
+            - SPI (Service Provider Interface): Core interfaces and classes for ShrinkWrap Resolver.
+        -->
         <dependency>
             <groupId>org.jboss.shrinkwrap</groupId>
             <artifactId>shrinkwrap-api</artifactId>
             <version>${shrinkwrap.api.version}</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>org.jboss.shrinkwrap.resolver</groupId>
             <artifactId>shrinkwrap-resolver-api-maven</artifactId>
-            <version>2.2.0</version>
+            <version>${shrinkwrap.resolver.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.jboss.shrinkwrap.resolver</groupId>
             <artifactId>shrinkwrap-resolver-impl-maven</artifactId>
-            <version>2.2.0</version>
+            <version>${shrinkwrap.resolver.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.jboss.shrinkwrap.resolver</groupId>
             <artifactId>shrinkwrap-resolver-spi</artifactId>
-            <version>2.2.0</version>
+            <version>${shrinkwrap.resolver.version}</version>
             <scope>test</scope>
         </dependency>
 
+        <!--
+            Jetty Dependencies:
+            Facilitate the deployment and running of tests specifically in a Jetty environment.
+            - Deploy: Provides deployment capabilities in Jetty.
+            - Annotations: Supplies Jetty-specific annotations required for Servlet 3.1 compatibility.
+        -->
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-deploy</artifactId>
-            <version>9.4.49.v20220914</version>
-            <scope>provided</scope>
+            <version>${jetty.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
-            <!-- Jetty annotations needed for Servlet 3.1 support -->
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-annotations</artifactId>
-            <version>9.4.49.v20220914</version>
-            <scope>provided</scope>
+            <version>${jetty.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
     <build>
+        <!-- Resources Configuration: Defines what resources to include in the final build. -->
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
+                <!-- Include all files and directories under 'src/main/resources' -->
                 <includes>
                     <include>**/*</include>
                 </includes>
             </resource>
         </resources>
+
         <plugins>
-            <!-- Set source and target Java version -->
+            <!-- Compiler Plugin: Configures the Java compiler settings for the build. -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven.compiler.plugin.version}</version>
                 <configuration>
+                    <!-- Ensure that the Java source and target versions are consistent -->
                     <source>${java.version}</source>
                     <target>${java.version}</target>
                 </configuration>
             </plugin>
 
-            <!-- Plugin for creating the war file -->
+            <!-- WAR Plugin: Handles the creation of the WAR (Web Application Archive) file. -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>${maven.war.plugin.version}</version>
                 <configuration>
+                    <!-- Ensure classes are packaged within the WAR file -->
                     <archiveClasses>true</archiveClasses>
                     <webResources>
-                        <!-- in order to interpolate version from pom into appengine-web.xml -->
+                        <!-- Define additional resources for inclusion in the WAR. -->
                         <resource>
+                            <!-- Source directory for the web configuration files. -->
                             <directory>${basedir}/src/main/webapp/WEB-INF</directory>
+                            <!-- Enables Maven to replace placeholders with POM values. -->
                             <filtering>true</filtering>
+                            <!-- Destination within the WAR file for these resources. -->
                             <targetPath>WEB-INF</targetPath>
                         </resource>
                     </webResources>
                 </configuration>
             </plugin>
 
-            <!-- Plugin for running the application in Jetty -->
+            <!-- Jetty Plugin: Allows for running the application in a Jetty server. -->
             <plugin>
                 <groupId>org.mortbay.jetty</groupId>
                 <artifactId>maven-jetty-plugin</artifactId>
                 <version>${maven.jetty.plugin.version}</version>
                 <configuration>
+                    <!-- Scan for changes every 10 seconds and auto-reload if necessary -->
                     <scanIntervalSeconds>10</scanIntervalSeconds>
+                    <!-- Define the connector configuration, including port and idle timeout -->
                     <connectors>
                         <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
                             <port>8080</port>
                             <maxIdleTime>60000</maxIdleTime>
                         </connector>
                     </connectors>
+                    <!-- Set the context path for the application -->
                     <contextPath>/</contextPath>
+                    <!-- Configuration for stopping the Jetty server (values left for customization) -->
                     <stopKey/>
                     <stopPort/>
                 </configuration>
             </plugin>
 
             <plugin>
+                <!--
+                    Maven Dependency Plugin:
+                    Purpose:
+                    - Added to facilitate manual testing of the Shrinkwrap generated WAR.
+                    - This was necessary due to intermittent failures in Arquillian tests.
+                    - Using this plugin, the WAR can be manually loaded via the webapp-runner, enabling testing via browser and API tools like Postman.
+                    Usage:
+                    java -jar target/dependency/webapp-runner.jar target/arquillian-jetty-temp/export[random-number]test.war
+                -->
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.3.0</version>
+                <version>${maven.dependency.plugin.version}</version>
                 <executions>
+                    <!-- Copy webapp-runner during the 'package' phase for testing Shrinkwrap WARs. -->
                     <execution>
                         <phase>package</phase>
                         <goals>
                             <goal>copy</goal>
                         </goals>
                         <configuration>
+                            <!-- Define the Heroku webapp-runner to be copied. -->
                             <artifactItems>
                                 <artifactItem>
                                     <groupId>com.heroku</groupId>
@@ -220,5 +290,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
