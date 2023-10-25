@@ -10,6 +10,7 @@
 
     <properties>
         <restlet.version>2.4.3</restlet.version>
+        <restlet.ext.apispark.version>2.3.12</restlet.ext.apispark.version>
         <java.version>1.8</java.version>
         <junit.version>4.13.1</junit.version>
         <shrinkwrap.api.version>1.2.3</shrinkwrap.api.version>
@@ -29,6 +30,12 @@
             <id>maven-restlet</id>
             <name>Restlet repository</name>
             <url>https://maven.restlet.talend.com</url>
+        </repository>
+        <!--Needed by ApiSpark due to RAML dependency-->
+        <repository>
+            <id>mulesoft-releases</id>
+            <name>MuleSoft Releases Repository</name>
+            <url>https://repository-master.mulesoft.org/releases/</url>
         </repository>
     </repositories>
 
@@ -97,6 +104,17 @@
         <dependency>
             <groupId>org.restlet.jse</groupId>
             <artifactId>org.restlet.ext.simple</artifactId>
+            <version>${restlet.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.restlet.jee</groupId>
+            <artifactId>org.restlet.ext.apispark</artifactId>
+            <version>${restlet.ext.apispark.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.restlet.jee</groupId>
+            <artifactId>org.restlet.ext.guice</artifactId>
             <version>${restlet.version}</version>
         </dependency>
 
