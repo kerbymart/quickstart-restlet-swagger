@@ -4,6 +4,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import org.example.config.Configuration;
 import org.example.modules.ConfigModule;
+import org.example.docs.EnhancedSwagger2SpecificationRestlet;
 import org.example.resources.HelloWorldResource;
 import org.example.resources.RootResource;
 import org.restlet.Application;
@@ -93,7 +94,7 @@ public class Main extends Application {
     private void attachSwaggerSpecification2(Router router) {
         // Attach the Swagger V2 specification, giving a standardized view of our API's capabilities.
         Swagger2SpecificationRestlet swagger2SpecificationRestlet
-                = new Swagger2SpecificationRestlet(this);
+                = new EnhancedSwagger2SpecificationRestlet(this);
         swagger2SpecificationRestlet.setBasePath("http://localhost:8080/");
         swagger2SpecificationRestlet.attach(router, "/api-docs");
     }
