@@ -11,6 +11,8 @@
     <properties>
         <restlet.version>2.4.3</restlet.version>
         <restlet.ext.apispark.version>2.3.12</restlet.ext.apispark.version>
+        <commons.fileupload.version>1.4</commons.fileupload.version>
+        <apache.httpcomponents.version>4.5.14</apache.httpcomponents.version>
         <java.version>1.8</java.version>
         <junit.version>4.13.1</junit.version>
         <shrinkwrap.api.version>1.2.3</shrinkwrap.api.version>
@@ -93,6 +95,10 @@
                     <groupId>org.raml</groupId>
                     <artifactId>raml-parser</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>org.apache.httpcomponents</groupId>
+                    <artifactId>httpclient</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
 
@@ -107,15 +113,57 @@
             <version>${restlet.version}</version>
         </dependency>
 
+        <!--
+            Restlet's API Spark Extension:
+            Provides support for creating and managing APIs using Restlet's API Spark platform.
+        -->
         <dependency>
             <groupId>org.restlet.jee</groupId>
             <artifactId>org.restlet.ext.apispark</artifactId>
             <version>${restlet.ext.apispark.version}</version>
         </dependency>
+
+        <!--
+            Restlet's Guice Extension:
+            Integrates Restlet with Google Guice, enabling dependency injection
+            and inversion of control in Restlet applications.
+        -->
         <dependency>
             <groupId>org.restlet.jee</groupId>
             <artifactId>org.restlet.ext.guice</artifactId>
             <version>${restlet.version}</version>
+        </dependency>
+
+        <!--
+            Restlet's File Upload Extension:
+            Provides support for file uploads in Restlet applications.
+        -->
+        <dependency>
+            <groupId>org.restlet.jee</groupId>
+            <artifactId>org.restlet.ext.fileupload</artifactId>
+            <version>${restlet.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>${commons.fileupload.version}</version>
+        </dependency>
+
+        <!--
+            Apache HTTP Components:
+            Provides a robust and flexible library for HTTP communication.
+            - httpclient: Core library for HTTP communication.
+            - httpmime: Extension for handling MIME content types.
+        -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>${apache.httpcomponents.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpmime</artifactId>
+            <version>4.5.4</version>
         </dependency>
 
         <!-- Enables the writing and execution of unit tests using JUnit. -->

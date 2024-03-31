@@ -7,6 +7,7 @@ import org.example.modules.ConfigModule;
 import org.example.docs.EnhancedSwagger2SpecificationRestlet;
 import org.example.resources.HelloWorldResource;
 import org.example.resources.RootResource;
+import org.example.resources.UploadResource;
 import org.restlet.Application;
 import org.restlet.Component;
 import org.restlet.Restlet;
@@ -49,6 +50,7 @@ public class Main extends Application {
         Router router = new Router(getContext());
         router.attachDefault(factory.finder(RootResource.class));
         router.attach("/hello", factory.finder(HelloWorldResource.class));
+        router.attach("/upload", factory.finder(UploadResource.class));
 
         // Provide UI for API visualization and testing.
         attachSwaggerUI(router);
