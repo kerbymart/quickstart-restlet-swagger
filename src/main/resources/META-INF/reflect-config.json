@@ -1,0 +1,7 @@
+[
+  {
+    "name" : "com.google.inject.internal.asm.util.$TraceClassVisitor",
+    "allPublicMethods" : true,
+    "allDeclaredConstructors" : true
+  }
+]
